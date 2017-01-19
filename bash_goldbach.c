@@ -78,6 +78,11 @@ int is_goldbach(long number, unsigned char *primes_field)
     return equality_holds;
 }
 
+/* Generates a filed of primes up to max_number
+ * The code was taken from 
+ * http://web.archive.org/web/20130519082757/http://www.fpx.de/fp/Software/sieve.c
+ * and modified
+ */
 int gen_primes(long max_number, unsigned char *feld )
 {
     unsigned char *zzz;
@@ -97,7 +102,7 @@ int gen_primes(long max_number, unsigned char *feld )
             for (mom=3L*teste; mom<max_number; mom+=teste<<1) SET (feld, mom);
         }
 
-    printf (" %ld prime numbers foundn %ld secs.\n\nShow prime numbers", 
+    printf (" %ld prime numbers found in %ld secs.\n\n", 
             hits, time(NULL)-begin);
     return 0;
 }
