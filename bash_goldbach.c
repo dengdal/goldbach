@@ -4,6 +4,10 @@
  * and a is an integer of free choice. So, in english, this means that
  * any odd integer can be written as the sum of a prime number and twice the square of an
  * integer. As prime number counts also 1, for historical reasons.
+ *
+ * The program has been tried up to 1 Billion without finding any new Stern numbers
+ * The old 5777 and 5993 were found though.
+ * This took 36 sec on an old Xenon machine
  */
 
 #include <stdio.h>
@@ -56,7 +60,7 @@ int main()
         printf("\nGoldbachs-Siverbecks conjecture does not hold.\n");
 
     printf ("Time consumed: %ld secs.\n\n", time(NULL)-begin);
-    return 0;
+    return ret;
 }
 
 
