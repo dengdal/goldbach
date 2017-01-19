@@ -11,7 +11,7 @@
 #include <malloc.h>
 #include <time.h>
 
-#define PRINT_INTERVAL 100001 // Should be an odd number
+#define PRINT_INTERVAL 1000001 // Should be an odd number
 #define TEST(f,x)(*(f+  (x)/16)&(1<<(((x)%16L)/2))) // Used for gen_prime
 #define SET(f,x)*(f+(x)/16)|=1<<(((x)%16L)  /2) // Used for gen_prime
 
