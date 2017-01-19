@@ -33,6 +33,9 @@ int main()
     // Allocate field for primes
     primes_field = malloc((max_number>>4)+1L);
 
+    // Generate the primes field
+    ret =  gen_primes(max_number, primes_field);
+
     while((number < max_number)) {  
         equality_holds = is_goldbach(number, primes_field);
         if(equality_holds==0) {
@@ -65,11 +68,10 @@ int is_goldbach(long number, unsigned char *primes_field)
     for (i = floor_sqrt_half_n; i >= 0; i--) {
         equality_holds = 0; // We will test if the equality holds for this value if i
         rest = number - 2*i*i;
-        div = 2;
         if ((!TEST(primes_field,rest)) || (rest == 1))  { // if rest is a prime or 1
             // 1 is not a prime, but was considered a prime in Goldbachs days.
             equality_holds = 1;
-            break;
+            break; // go out and tell the world
         }
     }
 
@@ -97,14 +99,5 @@ int gen_primes(long max_number, unsigned char *feld )
 
     printf (" %ld prime numbers foundn %ld secs.\n\nShow prime numbers", 
             hits, time(NULL)-begin);
-
-    while (s<e) {
-        printf ("\n\nStart of Area : "); fflush (stdout); scanf ("%ld", &s);
-        printf ("End   of Area : ");     fflush (stdout); scanf ("%ld", &e);
-
-        count=s-2; if (s%2==0) count++;
-        while ((count+=2)<e) if (!TEST(feld,count)) printf ("%ld\t", count);
-    }
-    free (feld);
     return 0;
 }
