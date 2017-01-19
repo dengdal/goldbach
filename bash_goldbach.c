@@ -81,7 +81,7 @@ int is_goldbach(long number, unsigned char *primes_field)
 int gen_primes(long max_number, unsigned char *feld )
 {
     unsigned char *zzz;
-    unsigned long teste=1, max, mom, hits=1, count, alloc, s=0, e=1;
+    unsigned long teste=1, mom, hits=1, count, alloc, s=0, e=1;
     time_t begin;
 
     zzz = feld;
@@ -94,7 +94,7 @@ int gen_primes(long max_number, unsigned char *feld )
     while ((teste+=2) < max_number)
         if (!TEST(feld, teste)) {
             if  (++hits%2000L==0) {printf (" %ld. prime number\x0d", hits); fflush(stdout);}
-            for (mom=3L*teste; mom<max; mom+=teste<<1) SET (feld, mom);
+            for (mom=3L*teste; mom<max_number; mom+=teste<<1) SET (feld, mom);
         }
 
     printf (" %ld prime numbers foundn %ld secs.\n\nShow prime numbers", 
