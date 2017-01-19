@@ -1,9 +1,9 @@
-/* This program searches for numbers does not fulfill Goldbachs lesser known conjecture:
+/* This program searches for numbers which do not fulfill Goldbachs lesser known conjecture:
  * odd_int = prime + 2a*a
  * where odd_int is any odd integer, prime is a prime number of free choice,
  * and a is an integer of free choice. So, in english, this means that
  * any odd integer can be written as the sum of a prime number and twice the square of an
- * integer.
+ * integer. As prime number counts also 1, for historical reasons.
  */
 
 #include <stdio.h>
@@ -11,7 +11,7 @@
 #include <malloc.h>
 #include <time.h>
 
-#define PRINT_INTERVAL 1000001 // Should be an odd number
+#define PRINT_INTERVAL 10000001 // Should be an odd number
 #define TEST(f,x)(*(f+  (x)/16)&(1<<(((x)%16L)/2))) // Used for gen_prime
 #define SET(f,x)*(f+(x)/16)|=1<<(((x)%16L)  /2) // Used for gen_prime
 
@@ -20,6 +20,7 @@ int gen_primes(long number, unsigned char *primes_field);
 
 int main()
 {
+    time_t begin;
     unsigned char *primes_field=NULL;
     int ret; 
     long number = 5;
@@ -29,6 +30,9 @@ int main()
 
     printf("Enter a number to know if there exists smaller integers that breaks Goldbachs-Siverbecks conjecture (known as Stern-numbers): ");
     ret = scanf("%ld",&max_number);
+
+    // start timer
+    begin = time (NULL);
 
     // Allocate field for primes
     primes_field = malloc((max_number>>4)+1L);
@@ -44,12 +48,14 @@ int main()
         }
         number+=2; // Next odd number
         if(number%PRINT_INTERVAL==0)
-            printf("Next number to check is %ld\n", number);
+            printf(".\n");
     }
     if(found_stern_number==0) 
-        printf("Tested all odd numbers up to %ld for Goldbachs-Siverbecks conjecture, which still holds.\n", number);
+        printf("\nTested all odd numbers up to %ld for Goldbachs-Siverbecks conjecture, which still holds.\n", number);
     else
-        printf("Goldbachs-Siverbecks conjecture does not hold.\n");
+        printf("\nGoldbachs-Siverbecks conjecture does not hold.\n");
+
+    printf ("Time consumed: %ld secs.\n\n", time(NULL)-begin);
     return 0;
 }
 
