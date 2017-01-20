@@ -7,15 +7,16 @@
  *
  * The program has been tried up to 1 Billion without finding any new Stern numbers
  * The old 5777 and 5993 were found though.
- * This took 36 sec on an old Xenon machine
+ * This took 36 sec on an old Xeon X3470  @ 2.93G
  */
 
 #include <stdio.h>
 #include <math.h>
 #include <malloc.h>
 #include <time.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
 
-#define PRINT_INTERVAL 10000001 // Should be an odd number
 #define TEST(f,x)(*(f+  (x)/16)&(1<<(((x)%16L)/2))) // Used for gen_prime
 #define SET(f,x)*(f+(x)/16)|=1<<(((x)%16L)  /2) // Used for gen_prime
 
@@ -26,14 +27,23 @@ int main()
 {
     time_t begin;
     unsigned char *primes_field=NULL;
-    int ret; 
+    int ret, print_interval; 
     long number = 5;
-    long max_number;
+    long max_number, progress_print_interval;
     int equality_holds = 0;
     int found_stern_number=0; // used as counter for found number that does not fulfill the conjecture
+    struct winsize w;
+    
 
-    printf("Enter a number to know if there exists smaller integers that breaks Goldbachs-Siverbecks conjecture (known as Stern-numbers): ");
+    printf("Enter a number to know if there exists smaller integers that breaks Goldbachs lesser known conjecture (known as Stern-numbers): ");
     ret = scanf("%ld",&max_number);
+
+    // unset buffering to stdout to be able to printf progress marker on one line
+    setbuf(stdout, NULL);
+
+    // get terminal size and set print interval
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    progress_print_interval = max_number / (long)w.ws_col;
 
     // start timer
     begin = time (NULL);
@@ -44,6 +54,7 @@ int main()
     // Generate the primes field
     ret =  gen_primes(max_number, primes_field);
 
+    // Main loop
     while((number < max_number)) {  
         equality_holds = is_goldbach(number, primes_field);
         if(equality_holds==0) {
@@ -51,13 +62,13 @@ int main()
             found_stern_number =+ 1;
         }
         number+=2; // Next odd number
-        if(number%PRINT_INTERVAL==0)
-            printf(".\n");
+        if((number%progress_print_interval)==0)
+            printf(".");
     }
     if(found_stern_number==0) 
-        printf("\nTested all odd numbers up to %ld for Goldbachs-Siverbecks conjecture, which still holds.\n", number);
+        printf("\nTested all odd numbers up to %ld for Goldbachs L-K conjecture, which still holds.\n", number);
     else
-        printf("\nGoldbachs-Siverbecks conjecture does not hold.\n");
+        printf("\nGoldbachs L-K conjecture does not hold.\n");
 
     printf ("Time consumed: %ld secs.\n\n", time(NULL)-begin);
     return ret;
