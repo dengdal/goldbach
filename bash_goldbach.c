@@ -4,10 +4,11 @@
  * and a is an integer of free choice. So, in english, this means that
  * any odd integer can be written as the sum of a prime number and twice the square of an
  * integer. As prime number counts also 1, for historical reasons.
+ * A number that breaks the conjecture is callde a Stern number.
  *
  * The program has been tried up to 1 Billion without finding any new Stern numbers
  * The old 5777 and 5993 were found though.
- * This took 36 sec on an old Xeon X3470  @ 2.93G
+ * This took 36 sec on an old Xeon X3470 @2.93G
  */
 
 #include <stdio.h>
@@ -17,7 +18,7 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 
-#define TEST(f,x)(*(f+  (x)/16)&(1<<(((x)%16L)/2))) // Used for gen_prime
+#define TEST(f,x)(*(f+(x)/16)&(1<<(((x)%16L)/2))) // Used for gen_prime
 #define SET(f,x)*(f+(x)/16)|=1<<(((x)%16L)  /2) // Used for gen_prime
 
 int is_goldbach(long number, unsigned char *primes_field);
@@ -28,7 +29,7 @@ int main()
     time_t begin;
     unsigned char *primes_field=NULL;
     int ret, print_interval; 
-    long number = 5;
+    long number = 1; //Start search with this number.
     long max_number, progress_print_interval;
     int equality_holds = 0;
     int found_stern_number=0; // used as counter for found number that does not fulfill the conjecture
